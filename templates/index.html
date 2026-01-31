@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarketAI Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='saved-styles.css') }}">
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="logo-area">
+                <div class="logo-icon">M</div>
+                <h2>MarketAI</h2>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item active" data-view="dashboard">
+                    <span class="icon">📊</span> Dashboard
+                </li>
+                <li class="nav-item" data-view="campaign">
+                    <span class="icon">🚀</span> Ad Campaign
+                </li>
+                <li class="nav-item" data-view="pitch">
+                    <span class="icon">🎤</span> Sales Pitch
+                </li>
+                <li class="nav-item" data-view="lead">
+                    <span class="icon">🎯</span> Lead Score
+                </li>
+                <li class="nav-separator"></li>
+                <li class="nav-item" data-view="analytics">
+                    <span class="icon">📈</span> Analytics Hub
+                </li>
+                <li class="nav-item" data-view="saved">
+                    <span class="icon">💾</span> Saved Campaigns
+                </li>
+                <li class="nav-item" data-view="templates">
+                    <span class="icon">📋</span> Templates
+                </li>
+                <li class="nav-separator"></li>
+                <li class="nav-item" data-view="settings">
+                    <span class="icon">⚙️</span> Settings
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="avatar">AI</div>
+                <div class="user-info">
+                    <span class="name">Admin User</span>
+                    <span class="status">Online</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar glass-panel">
+                <h1 id="page-title">Dashboard</h1>
+                <div class="actions">
+                    <button class="icon-btn">🔔</button>
+                    <button class="icon-btn">⚙️</button>
+                </div>
+            </header>
+
+            <!-- Dynamic Views -->
+            <div class="view-container">
+
+                <!-- Dashboard View -->
+                <div id="view-dashboard" class="view active fade-in-up">
+                    <div class="stats-grid">
+                        <div class="stat-card glass-panel">
+                            <h3>Campaigns Generated</h3>
+                            <div class="number count-up" data-target="124">0</div>
+                            <div class="trend positive">+12% this week</div>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <h3>Credits Remaining</h3>
+                            <div class="number count-up" data-target="850">0</div>
+                            <div class="trend neutral">Standard Plan</div>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <h3>Avg. Lead Score</h3>
+                            <div class="number count-up" data-target="78">0</div>
+                            <div class="trend positive">High Quality</div>
+                        </div>
+                    </div>
+
+                    <div class="banner glass-panel">
+                        <h2>Welcome to Next-Gen Marketing</h2>
+                        <p>Powered by Groq Llama 3.3. Select a tool from the sidebar to begin.</p>
+                    </div>
+                </div>
+
+                <!-- Campaign View -->
+                <div id="view-campaign" class="view">
+                    <div class="split-layout">
+                        <section class="input-panel glass-panel">
+                            <h2>New Campaign</h2>
+                            <form id="campaign-form">
+                                <div class="form-group floating-label">
+                                    <input type="text" name="product" id="c-product" placeholder=" " required>
+                                    <label for="c-product">Product / Service</label>
+                                </div>
+                                <div class="form-group floating-label">
+                                    <input type="text" name="audience" id="c-audience" placeholder=" " required>
+                                    <label for="c-audience">Target Audience</label>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Campaign Goal</label>
+                                        <select name="goal" class="styled-select">
+                                            <option value="Brand Awareness">Brand Awareness</option>
+                                            <option value="Lead Generation">Lead Generation</option>
+                                            <option value="Direct Sales">Direct Sales</option>
+                                            <option value="Engagement">Engagement</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tone of Voice</label>
+                                        <select name="tone" class="styled-select">
+                                            <option value="Professional">Professional</option>
+                                            <option value="Witty/Humorous">Witty/Humorous</option>
+                                            <option value="Urgent/FOMO">Urgent/FOMO</option>
+                                            <option value="Empathetic">Empathetic</option>
+                                            <option value="Luxury">Luxury</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Platform</label>
+                                    <select name="platform" class="styled-select">
+                                        <option value="Any">✨ Any / Best Fit</option>
+                                        <option value="LinkedIn">LinkedIn</option>
+                                        <option value="Twitter/X">Twitter/X</option>
+                                        <option value="Instagram">Instagram</option>
+                                        <option value="Email">Email</option>
+                                        <option value="TikTok">TikTok</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="cyber-btn">
+                                    <span class="btn-text">Generate Campaign</span>
+                                    <span class="btn-glitch"></span>
+                                </button>
+                            </form>
+                        </section>
+                        <section class="output-panel glass-panel" id="campaign-result-container">
+                            <div class="placeholder-state">
+                                <div class="pulse-ring"></div>
+                                <p>AI Awaiting Input...</p>
+                            </div>
+                            <div class="results-content hidden"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Pitch View -->
+                <div id="view-pitch" class="view">
+                    <div class="split-layout">
+                        <section class="input-panel glass-panel">
+                            <h2>Sales Pitch</h2>
+                            <form id="pitch-form">
+                                <div class="form-group floating-label">
+                                    <input type="text" name="product" id="p-product" placeholder=" " required>
+                                    <label for="p-product">Product / Service</label>
+                                </div>
+                                <div class="form-group floating-label">
+                                    <textarea name="customer_persona" id="p-persona" placeholder=" "
+                                        required></textarea>
+                                    <label for="p-persona">Customer Persona</label>
+                                </div>
+                                <div class="form-group floating-label">
+                                    <input type="text" name="pain_points" id="p-pain" placeholder=" ">
+                                    <label for="p-pain">Key Pain Points to Solve</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pitch Format</label>
+                                    <select name="format" class="styled-select">
+                                        <option value="Elevator Pitch">Elevator Pitch (30s)</option>
+                                        <option value="Cold Email">Cold Email</option>
+                                        <option value="LinkedIn DM">LinkedIn DM</option>
+                                        <option value="Cold Call Script">Cold Call Script</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="cyber-btn">
+                                    <span class="btn-text">Generate Pitch</span>
+                                    <span class="btn-glitch"></span>
+                                </button>
+                            </form>
+                        </section>
+                        <section class="output-panel glass-panel" id="pitch-result-container">
+                            <div class="placeholder-state">
+                                <div class="pulse-ring"></div>
+                                <p>AI Awaiting Input...</p>
+                            </div>
+                            <div class="results-content hidden"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Lead View -->
+                <div id="view-lead" class="view">
+                    <div class="split-layout">
+                        <section class="input-panel glass-panel">
+                            <h2>Lead Analysis</h2>
+                            <form id="lead-form">
+                                <div class="form-group floating-label">
+                                    <input type="text" name="name" id="l-name" placeholder=" " required>
+                                    <label for="l-name">Lead Name</label>
+                                </div>
+                                <div class="form-group floating-label">
+                                    <input type="number" name="budget" id="l-budget" placeholder=" " required>
+                                    <label for="l-budget">Budget ($)</label>
+                                </div>
+                                <div class="form-group floating-label">
+                                    <textarea name="need" id="l-need" placeholder=" " required></textarea>
+                                    <label for="l-need">Need Description</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Urgency</label>
+                                    <select name="urgency" class="styled-select">
+                                        <option value="High">High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="cyber-btn">
+                                    <span class="btn-text">Calculate Score</span>
+                                    <span class="btn-glitch"></span>
+                                </button>
+                            </form>
+                        </section>
+                        <section class="output-panel glass-panel" id="lead-result-container">
+                            <div class="placeholder-state">
+                                <div class="pulse-ring"></div>
+                                <p>AI Awaiting Input...</p>
+                            </div>
+                            <div class="results-content hidden"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Analytics Hub View -->
+                <div id="view-analytics" class="view">
+                    <div class="analytics-grid">
+                        <div class="analytics-card glass-panel">
+                            <h3>Usage Overview</h3>
+                            <canvas id="usageChart" style="max-height: 300px;"></canvas>
+                        </div>
+                        <div class="analytics-card glass-panel">
+                            <h3>Performance Metrics</h3>
+                            <div class="metrics-list">
+                                <div class="metric-item">
+                                    <span class="metric-label">Avg. Response Time</span>
+                                    <span class="metric-value">245ms</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Success Rate</span>
+                                    <span class="metric-value">98.5%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Total Requests</span>
+                                    <span class="metric-value" id="total-requests">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analytics-card glass-panel full-width">
+                            <h3>Recent Activity</h3>
+                            <div class="activity-timeline" id="activity-timeline">
+                                <div class="empty-state">No recent activity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Campaigns View -->
+                <div id="view-saved" class="view">
+                    <div class="saved-header">
+                        <div class="search-bar glass-panel">
+                            <input type="text" id="search-saved" placeholder="Search saved campaigns...">
+                            <button class="search-btn">🔍</button>
+                        </div>
+                        <button class="btn-clear-all" onclick="clearAllSaved()">Clear All</button>
+                    </div>
+                    <div class="saved-grid" id="saved-campaigns-grid">
+                        <div class="empty-state-large glass-panel">
+                            <div class="empty-icon">💾</div>
+                            <h3>No Saved Campaigns Yet</h3>
+                            <p>Generate campaigns and save them for future reference</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templates View -->
+                <div id="view-templates" class="view">
+                    <div class="templates-grid">
+                        <div class="template-card glass-panel">
+                            <div class="template-badge">E-commerce</div>
+                            <h3>Product Launch</h3>
+                            <p>Perfect for launching new products with multi-channel campaigns</p>
+                            <button class="btn-use-template" onclick="useTemplate('product-launch')">Use
+                                Template</button>
+                        </div>
+                        <div class="template-card glass-panel">
+                            <div class="template-badge">SaaS</div>
+                            <h3>Free Trial Campaign</h3>
+                            <p>Convert visitors into trial users with compelling copy</p>
+                            <button class="btn-use-template" onclick="useTemplate('free-trial')">Use Template</button>
+                        </div>
+                        <div class="template-card glass-panel">
+                            <div class="template-badge">B2B</div>
+                            <h3>LinkedIn Outreach</h3>
+                            <p>Professional B2B campaigns optimized for LinkedIn</p>
+                            <button class="btn-use-template" onclick="useTemplate('linkedin')">Use Template</button>
+                        </div>
+                        <div class="template-card glass-panel">
+                            <div class="template-badge">Retail</div>
+                            <h3>Seasonal Sale</h3>
+                            <p>Drive urgency with time-sensitive promotional campaigns</p>
+                            <button class="btn-use-template" onclick="useTemplate('seasonal')">Use Template</button>
+                        </div>
+                        <div class="template-card glass-panel">
+                            <div class="template-badge">Service</div>
+                            <h3>Consultation Booking</h3>
+                            <p>Generate leads and book consultations effectively</p>
+                            <button class="btn-use-template" onclick="useTemplate('consultation')">Use Template</button>
+                        </div>
+                        <div class="template-card glass-panel">
+                            <div class="template-badge">Event</div>
+                            <h3>Webinar Promotion</h3>
+                            <p>Fill your webinar seats with targeted campaigns</p>
+                            <button class="btn-use-template" onclick="useTemplate('webinar')">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="view-settings" class="view">
+                    <div class="settings-container">
+                        <div class="settings-section glass-panel">
+                            <h3>Appearance</h3>
+                            <div class="setting-item">
+                                <label>Theme</label>
+                                <select class="styled-select">
+                                    <option>Dark (Default)</option>
+                                    <option>Light</option>
+                                    <option>Auto</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Accent Color</label>
+                                <div class="color-picker">
+                                    <div class="color-option active" style="background: #00f2ff;"></div>
+                                    <div class="color-option" style="background: #bc13fe;"></div>
+                                    <div class="color-option" style="background: #ff007a;"></div>
+                                    <div class="color-option" style="background: #00ff9d;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section glass-panel">
+                            <h3>AI Preferences</h3>
+                            <div class="setting-item">
+                                <label>Default Tone</label>
+                                <select class="styled-select">
+                                    <option>Professional</option>
+                                    <option>Casual</option>
+                                    <option>Witty</option>
+                                    <option>Urgent</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Response Length</label>
+                                <select class="styled-select">
+                                    <option>Concise</option>
+                                    <option>Balanced (Default)</option>
+                                    <option>Detailed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section glass-panel">
+                            <h3>Notifications</h3>
+                            <div class="setting-item toggle-item">
+                                <label>Generation Complete</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label>Weekly Reports</label>
+                                <label class="toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-section glass-panel">
+                            <h3>Data & Privacy</h3>
+                            <button class="btn-danger" onclick="clearAllData()">Clear All Data</button>
+                            <button class="btn-secondary" onclick="exportAllData()">Export Data</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
