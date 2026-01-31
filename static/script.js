@@ -624,28 +624,41 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Create export data
-        const exportData = {
-            exportDate: new Date().toISOString(),
-            totalItems: saved.length,
-            data: saved
-        };
+        // Create export data text
+        let textContent = "MARKETAI SUITE - DATA EXPORT\n";
+        textContent += `Export Date: ${new Date().toLocaleString()}\n`;
+        textContent += `Total Items: ${saved.length}\n`;
+        textContent += "========================================\n\n";
 
-        // Convert to JSON
-        const jsonString = JSON.stringify(exportData, null, 2);
+        saved.forEach((item, index) => {
+            textContent += `ITEM #${index + 1}\n`;
+            textContent += `Type: ${item.type}\n`;
+            textContent += `Title: ${item.title}\n`;
+            textContent += `Date: ${new Date(item.timestamp).toLocaleString()}\n`;
+            textContent += `Summary: ${item.summary}\n`;
+            textContent += "\n--- INPUT ---\n";
+            for (const [key, value] of Object.entries(item.input)) {
+                textContent += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}\n`;
+            }
+            textContent += "\n--- OUTPUT ---\n";
+            for (const [key, value] of Object.entries(item.output)) {
+                textContent += `[${key}]\n${value}\n\n`;
+            }
+            textContent += "========================================\n\n";
+        });
 
-        // Create blob and download
-        const blob = new Blob([jsonString], { type: 'application/json' });
+        // Create blob and download as .txt
+        const blob = new Blob([textContent], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `marketai-export-${new Date().toISOString().split('T')[0]}.json`;
+        link.download = `marketai-export-${new Date().toISOString().split('T')[0]}.txt`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        showNotification(`✓ Exported ${saved.length} items successfully`);
+        showNotification(`✓ Exported ${saved.length} items as Text successfully`);
     };
 
     // Color picker functionality
