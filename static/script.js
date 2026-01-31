@@ -624,41 +624,81 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Create export data text
-        let textContent = "MARKETAI SUITE - DATA EXPORT\n";
-        textContent += `Export Date: ${new Date().toLocaleString()}\n`;
-        textContent += `Total Items: ${saved.length}\n`;
-        textContent += "========================================\n\n";
+        // Create a temporary container for the PDF content
+        const element = document.createElement('div');
+        element.style.padding = '50px';
+        element.style.color = '#111827';
+        element.style.backgroundColor = '#fff';
+        element.style.fontFamily = "'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        let htmlContent = `
+            <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 25px; margin-bottom: 40px;">
+                <h1 style="color: #000; margin: 0 0 10px 0; font-size: 28px; font-weight: 700;">MarketAI Suite</h1>
+                <p style="color: #4b5563; font-size: 16px; margin: 0;">Professional Marketing Intelligence Report</p>
+                <p style="color: #6b7280; font-size: 13px; margin-top: 8px;">Generated on: ${new Date().toLocaleString()}</p>
+            </div>
+        `;
 
         saved.forEach((item, index) => {
-            textContent += `ITEM #${index + 1}\n`;
-            textContent += `Type: ${item.type}\n`;
-            textContent += `Title: ${item.title}\n`;
-            textContent += `Date: ${new Date(item.timestamp).toLocaleString()}\n`;
-            textContent += `Summary: ${item.summary}\n`;
-            textContent += "\n--- INPUT ---\n";
-            for (const [key, value] of Object.entries(item.input)) {
-                textContent += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}\n`;
-            }
-            textContent += "\n--- OUTPUT ---\n";
+            // Process the output to be much more high-contrast
+            let formattedOutput = '';
             for (const [key, value] of Object.entries(item.output)) {
-                textContent += `[${key}]\n${value}\n\n`;
+                formattedOutput += `
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #4338ca; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; font-weight: 700;">${key}</h4>
+                        <div style="color: #1f2937; font-size: 15px; line-height: 1.6;">
+                            ${Array.isArray(value)
+                        ? `<ul style="margin: 0; padding-left: 20px;">${value.map(v => `<li style="margin-bottom: 5px;">${v}</li>`).join('')}</ul>`
+                        : value}
+                        </div>
+                    </div>
+                `;
             }
-            textContent += "========================================\n\n";
+
+            htmlContent += `
+                <div style="margin-bottom: 50px; page-break-inside: avoid;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div>
+                            <span style="background: #e0e7ff; color: #3730a3; padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">${item.type}</span>
+                            <h2 style="color: #000; font-size: 20px; margin: 12px 0 8px 0; font-weight: 700;">${item.title}</h2>
+                            <p style="color: #4b5563; font-size: 14px; font-style: italic; margin: 0;">${item.summary}</p>
+                        </div>
+                        <span style="color: #6b7280; font-size: 12px; font-weight: 500;">${new Date(item.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    
+                    <div style="background: #ffffff; padding: 25px; border-radius: 0; border-left: 4px solid #4338ca; border-top: 1px solid #f3f4f6; border-right: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                        ${formattedOutput}
+                    </div>
+                </div>
+                ${index < saved.length - 1 ? '<div style="page-break-after: always;"></div>' : ''}
+            `;
         });
 
-        // Create blob and download as .txt
-        const blob = new Blob([textContent], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `marketai-export-${new Date().toISOString().split('T')[0]}.txt`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        element.innerHTML = htmlContent;
 
-        showNotification(`✓ Exported ${saved.length} items as Text successfully`);
+        // PDF Options - Increased scale for sharpness
+        const opt = {
+            margin: [15, 15],
+            filename: `MarketAI_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+            image: { type: 'jpeg', quality: 1.0 },
+            html2canvas: {
+                scale: 4,
+                useCORS: true,
+                letterRendering: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
+        };
+
+        // Generate PDF
+        showNotification('⏳ Generating High-Resolution Report...');
+        html2pdf().set(opt).from(element).save().then(() => {
+            showNotification('✓ Report exported successfully');
+        }).catch(err => {
+            console.error('PDF Export Error:', err);
+            showNotification('❌ Export failed');
+        });
     };
 
     // Color picker functionality
